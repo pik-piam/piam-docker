@@ -73,6 +73,7 @@ repos:
 EOF
 
 ENV PATH="/root/.local/bin:$PATH"
+ENV PRE_COMMIT_HOME=/opt/pre-commit-cache
 RUN pipx ensurepath && \
     pipx install pre-commit && \
     git init . && \

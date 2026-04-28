@@ -28,7 +28,7 @@ ENV RENV_CONFIG_REPOS_OVERRIDE='https://packagemanager.posit.co/cran/__linux__/n
 
 RUN <<EOF 
 echo "options(repos = c(pikpiam = 'https://pik-piam.r-universe.dev',
-                        CRAN = Sys.getenv('RSPM')))" > ~/.Rprofile
+                        CRAN = Sys.getenv('RSPM')))" > /root/.Rprofile
 EOF
 
 RUN Rscript -e " \

@@ -1,6 +1,9 @@
 FROM rocker/r-ubuntu:latest
 WORKDIR /tmp/setup
 
+#
+# Prepare the OS
+#
 RUN echo "apt::install-recommends \"false\";" > /etc/apt/apt.conf.d/95-no-install-recommends
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && \
@@ -16,6 +19,10 @@ RUN apt-get update -y && \
 
 RUN git config --system safe.directory "*"
 
+
+#
+# Pre-install R packages
+#
 ENV RSPM='https://packagemanager.posit.co/cran/__linux__/noble/latest'
 ENV RENV_CONFIG_REPOS_OVERRIDE='https://packagemanager.posit.co/cran/__linux__/noble/latest'
 
@@ -29,6 +36,11 @@ RUN Rscript -e " \
   " \
   && rm -rf /var/lib/apt/lists/*
 
+
+# 
+# Set up pre-commit. 
+# First install pre-commit itself, then the actual checks
+# 
 RUN <<EOF 
 echo "exclude: '^tests/testthat/_snaps/.*$'
 repos:
@@ -63,5 +75,9 @@ RUN pipx ensurepath && \
     pre-commit run --show-diff-on-failure --color=always --all-files && \
     rm .pre-commit-config.yaml
 
+
+#
+# Wrap up
+#
 WORKDIR /
 RUN rm -rf /tmp/setup

@@ -1,4 +1,4 @@
-FROM rocker/r-ubuntu:latest
+FROM rocker/r-ver:4.5
 WORKDIR /tmp/setup
 
 #
@@ -44,37 +44,11 @@ RUN Rscript -e " \
 # 
 # Set up pre-commit. 
 # First install pre-commit itself, then the actual checks
-# 
-RUN <<EOF 
-echo "exclude: '^tests/testthat/_snaps/.*$'
-repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b  # frozen: v5.0.0
-    hooks:
-    -   id: check-case-conflict
-    -   id: check-json
-    -   id: check-merge-conflict
-    -   id: check-yaml
-    -   id: fix-byte-order-marker
-    -   id: check-added-large-files
-        args: ['--maxkb=100']
-    -   id: mixed-line-ending
-
--   repo: https://github.com/lorenzwalthert/precommit
-    rev: 3b70240796cdccbe1474b0176560281aaded97e6  # frozen: v0.4.3.9003
-    hooks:
-    -   id: parsable-R
-    -   id: deps-in-desc
-        args: [--allow_private_imports]
-    -   id: no-browser-statement
-    -   id: no-debug-statement
-    -   id: readme-rmd-rendered
-    -   id: use-tidy-description" > .pre-commit-config.yaml
-EOF
-
+#
 ENV PATH="/root/.local/bin:$PATH"
 ENV PRE_COMMIT_HOME=/opt/pre-commit-cache
-RUN pipx ensurepath && \
+RUN curl https://raw.githubusercontent.com/pik-piam/lucode2/refs/heads/master/inst/extdata/pre-commit-config.yaml > .pre-commit-config.yaml && \
+    pipx ensurepath && \
     pipx install pre-commit && \
     git init . && \
     pre-commit run --show-diff-on-failure --color=always --all-files && \

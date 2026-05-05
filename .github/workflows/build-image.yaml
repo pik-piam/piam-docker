@@ -31,5 +31,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/codezeilen/piam-ci-test-image:latest
-            ghcr.io/codezeilen/piam-ci-test-image:${{ github.sha }}
+            ghcr.io/pik-piam/ci-image:latest
+            ghcr.io/pik-piam/ci-image:${{ github.sha }}

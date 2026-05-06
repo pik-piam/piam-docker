@@ -15,7 +15,6 @@ Built on [`rocker/r-ver:4.5`](https://rocker-project.org/), the image bundles:
 - **Common dependencies of piam packages** - Including OS packages
 - **Common R tools** - `devtools`, `pkgdown`, `covr`
 - **pre-commit** - installed via `pipx`, with the pik-piam pre-commit hook cache pre-populated so hooks run without network access at CI time
-- **System tools** - `pandoc`, `git`, `curl`, `wget`, `jq`, and common R build libraries
 
 
 ### Rebuild

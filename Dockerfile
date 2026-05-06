@@ -14,7 +14,6 @@ RUN apt-get update -y && \
       libcurl4-openssl-dev libssl-dev libfontconfig1-dev \
       libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev \
       libpng-dev libtiff-dev libicu-dev libgit2-dev zlib1g-dev \
-      rsync \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git config --system safe.directory "*"
@@ -31,6 +30,7 @@ echo "options(repos = c(pikpiam = 'https://pik-piam.r-universe.dev',
                         CRAN = Sys.getenv('RSPM')))" > /root/.Rprofile
 EOF
 
+# First install all packages, then remove documentation and tests
 RUN Rscript -e " \
   install.packages('pak'); \
   # Installing base dependencies \
@@ -38,6 +38,9 @@ RUN Rscript -e " \
   # Installing major pik-piam packages \
   pak::pak(c('lucode2', 'madrat', 'magclass', 'mrremind', 'magpie4', 'remind2', 'mip', 'quitte'));\
   " \
+  && find $(Rscript -e "cat(.libPaths()[[1]])") -type d \
+       \( -name "doc" -o -name "html" -o -name "tests" -o -name "demo" -o -name "examples" \) \
+       -exec rm -rf {} + 2>/dev/null || true \
   && rm -rf /var/lib/apt/lists/*
 
 
@@ -52,7 +55,7 @@ RUN curl https://raw.githubusercontent.com/pik-piam/lucode2/refs/heads/master/in
     pipx install pre-commit && \
     git init . && \
     pre-commit run --show-diff-on-failure --color=always --all-files && \
-    rm .pre-commit-config.yaml
+    rm -r .pre-commit-config.yaml .git
 
 
 #

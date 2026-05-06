@@ -4,6 +4,8 @@ on:
     paths:
       - Dockerfile
   workflow_dispatch:
+  schedule:
+    - cron: '* * * * 0'
 
 name: build-image.yaml
 

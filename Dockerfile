@@ -6,6 +6,7 @@ WORKDIR /tmp/setup
 #
 RUN echo "apt::install-recommends \"false\";" > /etc/apt/apt.conf.d/95-no-install-recommends
 ENV DEBIAN_FRONTEND=noninteractive
+# We need rsync to support the GH pages deply action
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
       ca-certificates curl wget jq git \
@@ -14,6 +15,7 @@ RUN apt-get update -y && \
       libcurl4-openssl-dev libssl-dev libfontconfig1-dev \
       libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev \
       libpng-dev libtiff-dev libicu-dev libgit2-dev zlib1g-dev \
+      rsync \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git config --system safe.directory "*"

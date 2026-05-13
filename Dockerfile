@@ -42,9 +42,6 @@ RUN Rscript -e " \
   # Installing major pik-piam packages \
   pak::pak(c('lucode2', 'madrat', 'magclass', 'mrremind', 'magpie4', 'remind2', 'mip', 'quitte'));\
   " \
-  && find $(Rscript -e "cat(.libPaths()[[1]])") -type d \
-       \( -name "doc" -o -name "html" -o -name "tests" -o -name "demo" -o -name "examples" \) \
-       -exec rm -rf {} + 2>/dev/null || true \
   && rm -rf /var/lib/apt/lists/*
 
 
